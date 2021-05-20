@@ -1,0 +1,51 @@
+#include <IRremote.h>
+
+IRrecv rec(pin);
+
+decode_results res;
+
+int relay1 = relaypin1 ;
+int relay2 = relaypin2 ;
+int relay2 = relaypin3 ;
+int relay2 = relaypin4 ;
+
+int gasen =A0;
+int tmsen =A1;
+int sp =4 , valgs , valtm;
+
+void setup(){
+  rec.enableIRIn();
+  Serial.begin(9600);
+  pinMode(sp,OUTPUT);
+}
+void loop(){
+  if(rec.decode(&res)){
+   
+    if(res.value == 0xzzzzzz)//reblace z with your remote code {
+     digitalWrite(relay1,LOW);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay1,HIGH);}
+    if(res.value == 0xzzzzzz)//reblace z with your remote code {
+     digitalWrite(relay2,LOW);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay2,HIGH);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay3,LOW);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay3,HIGH);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay4,LOW);}
+    if(res.value == 0xzzzzzz){
+     digitalWrite(relay4,HIGH);}              
+  rec.resume();
+  }}
+void fire_alarm(void){
+  valgs=analogRead(gasen);
+  valtm=analogRead(tmsen);
+  valtm=valtm * 0.48828125;
+  if(valgs>400){
+    tone(sp,250);}
+  if(valtm<60){
+    tone(sp,250);}
+  noTone(sp); 
+}
